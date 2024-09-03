@@ -23,6 +23,7 @@ jobs:
         run: |
           docker-scout quickview fs://.
           docker-scout cves fs://.
+          
       - name: Docker build and push
         run: |
           # Run commands to build and push Docker images
@@ -32,6 +33,7 @@ jobs:
           docker push sudeep1919/myntra:latest
         env:
           DOCKER_CLI_ACI: 1
+          
       - name: Docker Scout Image Scan
         run: |
           docker-scout quickview sudeep1919/myntra:latest
