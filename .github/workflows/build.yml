@@ -37,3 +37,6 @@ jobs:
     steps:
       - name: Run the container
         run: docker run -d --name myntra -p 3000:3000 sudeep1919/myntra1:latest
+        
+      - name: Update kubeconfig
+        run: aws eks --region <ap-south-1> update-kubeconfig --name <EKS_CLOUD>
