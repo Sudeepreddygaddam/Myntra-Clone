@@ -1,45 +1,26 @@
-name: Build
-
+name: Build,Analyze,scan
 on:
   push:
     branches:
       - main
-
 jobs:
-  build:
+  build-analyze-scan:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted]
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      
-      - uses: sonarsource/sonarqube-scan-action@master
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-
-      - name: Docker Login
-        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Docker build and push
+      - name: Deploy to container
         run: |
-          # Run commands to build and push Docker images
-          docker build -t myntra .
-          docker tag myntra sudeep1919/myntra1:latest
-          docker push sudeep1919/myntra1:latest
-        env:
-          DOCKER_CLI_ACI: 1
-
-  deploy:
-    needs: build
-    runs-on: Myntra-clone # Use your self-hosted runner label here
-    steps:
-      - name: Run the container
-        run: docker run -d --name myntra -p 3000:3000 sudeep1919/myntra1:latest
-        
+          docker stop myntra
+          docker rm myntra
       - name: Update kubeconfig
         run: aws eks --region ap-south-1 update-kubeconfig --name EKS_CLOUD
+      - name: Deploy to kubernetes
+        run: kubectl delete -f deployment-service.yml
 
-      - name: Deploy to EKS
-        run: kubectl apply -f deployment-service.yml
+
+
+
