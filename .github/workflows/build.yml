@@ -26,8 +26,8 @@ jobs:
         run: |
           # Run commands to build and push Docker images
           docker build -t myntra .
-          docker tag myntra sudeep1919/myntra:latest
-          docker push sudeep1919/myntra:latest
+          docker tag myntra sudeep1919/myntra1:latest
+          docker push sudeep1919/myntra1:latest
         env:
           DOCKER_CLI_ACI: 1
 
@@ -36,4 +36,4 @@ jobs:
     runs-on: Myntra-clone # Use your self-hosted runner label here
     steps:
       - name: Run the container
-        run: docker run -d --name myntra -p 3000:3000 sudeep1919/myntra:latest
+        run: docker run -d --name myntra -p 3000:3000 sudeep1919/myntra1:latest
