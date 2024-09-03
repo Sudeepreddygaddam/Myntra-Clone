@@ -33,7 +33,7 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: self-hosted # Use your self-hosted runner label here
+    runs-on: Myntra-clone # Use your self-hosted runner label here
     steps:
       - name: Run the container
         run: docker run -d --name myntra -p 3000:3000 sudeep1919/myntra:latest
